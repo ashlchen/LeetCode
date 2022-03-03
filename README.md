@@ -1,3 +1,3 @@
 # LeetCode
 
-*Daily practice using python
+* Daily practice using python
