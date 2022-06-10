@@ -1,3 +1,3 @@
-# LeetCode
+# 🏃 LeetCode
 
 * Daily practice using python
