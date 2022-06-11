@@ -52,20 +52,20 @@ def RomanToInteger(s):
         "M": 1000
     }
     res = 0
-    p = 0
+    cur = 0
     if not s:
         return -1
-    while p < len(s):
-        if p+1 < len(s):
-            if s[p] not in _lookup or s[p+1] not in _lookup:
+    while cur < len(s):
+        if cur+1 < len(s):
+            if s[cur] not in _lookup or s[cur+1] not in _lookup:
                 return -1
-            if _lookup[s[p]] >= _lookup[s[p+1]]:
-                res += _lookup[s[p]]
+            if _lookup[s[cur]] >= _lookup[s[cur+1]]:
+                res += _lookup[s[cur]]
             else:
-                res -= _lookup[s[p]]
+                res -= _lookup[s[cur]]
         else:
-            res += _lookup[s[p]]
-        p += 1
+            res += _lookup[s[cur]]
+        cur += 1
     return res
 
         
