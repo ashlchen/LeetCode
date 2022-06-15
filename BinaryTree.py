@@ -90,7 +90,7 @@ class Solution:
             maxSum_path = root.val + max(leftMax, rightMax)
 
             global res
-            # update result
+            # update split result
             res = max(maxSum_split, res)
 
             # because only 1 split is allowed, when return the value 
