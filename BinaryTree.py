@@ -63,3 +63,47 @@ class Solution:
         
         return helper(0, len(preorder)-1)
             
+
+class Solution:
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+# negative value can be in the path
+# for all positive nodes, we can't add everything up and be done
+    # because each node can only traverse once
+    # how you split the node is important
+    # only 1 split is allowed
+# solve sub problem first
+# DFS
+# O(n)
+        res = 0
+        def dfs(root):
+            if not root:
+                return 0
+            leftMax = dfs(root.left)
+            rightMax = dfs(root.right)
+            # handle negative value
+            leftMax = max(leftMax, 0)
+            rightMax = max(rightMax, 0)
+        
+            # if split
+            maxSum_split = root.val + leftMax + rightMax
+            # if not
+            maxSum_path = root.val + max(leftMax, rightMax)
+
+            global res
+            # update result
+            res = max(maxSum_split, res)
+
+            # because only 1 split is allowed, when return the value 
+            # to previous level, only return max path not split value
+            return maxSum_path 
+            
+        dfs(root)
+        return res
+
+
+
+
+
+
+
+
