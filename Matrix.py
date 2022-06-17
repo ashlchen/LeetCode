@@ -43,3 +43,55 @@ m1 = [[0]]
 m2 = [[0,1],[1,-1]]
 m3 = [[2,2],[2,2]]
 m4 = [[1,2,3],[4,5,6],[7,8,9]]
+
+
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+
+        # Understand
+        # m,n >=1 ... the matrix exists
+        # not necessary square matrix
+        # m = row
+        # n = column
+        
+        # Match
+        # two pointers: set boundaries, manipulate the progress accordingly
+
+        # Plan
+        # get l, r boundary and top, bottom boundary
+        l, r = 0, len(matrix[0]) - 1
+        t, b = 0, len(matrix) - 1
+        # output array
+        res = []
+        while r>=l and b>=t:
+            for i in range(l, r+1):
+                cur = matrix[t][i]
+                res.append(cur)
+        # re-initiatei pointers: top row has been done
+            t += 1
+    # when l == r, then start going vertically
+            for i in range(t, b+1):
+                cur = matrix[i][r]
+                res.append(cur)
+        # re-initiate pointers: the right most column has been seen
+            r -= 1
+    # when t == b, then start going horozontally
+            if t <= b:
+                for i in range(r, l-1, -1):
+                    cur = matrix[b][i]
+                    res.append(cur)
+        # re-initaite pointers: the bottom has been seen
+                b -= 1
+    # when r == l, go vertically, but - 1
+            if l <= r:
+                for i in range(b, t-1, -1):
+                    cur = matrix[i][l]
+                    res.append(cur)
+        # re-initiate pointers
+                l += 1
+        return res
+
+# test case
+m1 = [[0]]        # zero
+m2 = [[-1]]       # negative  
+m3 = [[2,2],[2,2]] # duplicate
