@@ -29,3 +29,30 @@ class Solution:
                 newRow[j] = newRow[j+1] + row[j]
             row = newRow
         return row[0]
+    
+    def longestPalindrome(self, s):
+        # understand
+        # "sa": "s" or "a" is a palidrome
+        # "1a1" is a palidrome
+        # "cbbd": "bb" is a palindrome
+
+        # match
+        # DP: try all possible solution, and pick the longest palidrome
+        # two pointer
+
+        res = ""
+        for i in range(len(s)):
+            # odd case
+            temp = self.helper(s, i, i)
+            if len(temp) > len(res):
+                res = temp
+            # even case
+            temp = self.helper(s, i, i+1)
+            if len(temp) > len(res):
+                res = temp
+        return res
+    def helper(self, l, r):
+        while l>=0 and r < len(s) and s[l] == s[r]:
+            l -=1
+            r +=1
+        return s[l+1:r]
