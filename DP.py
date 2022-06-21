@@ -56,3 +56,25 @@ class Solution:
             l -=1
             r +=1
         return s[l+1:r]
+
+    def countSubstrings(self, s: str) -> int:
+    # two pointer
+    res = 0
+    # odd length substring
+    for i in range(len(s)):
+        l, r = i, i
+        while l>=0 and r < len(s) and s[l] == s[r]:
+            res += 1
+            l -= 1
+            r += 1
+    # if s[l] == s[r] and l<=0 and r< len(s)
+    # res += 1
+    
+    # even length substring
+    for i in range(len(s)):
+        l, r = i, i+1
+        while l>=0 and r < len(s) and s[l] == s[r]:
+            res += 1
+            l -=1
+            r += 1
+    return res
