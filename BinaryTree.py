@@ -102,7 +102,30 @@ class Solution:
 
 
 
-
+class Solution:
+    def goodNodes(self, root: TreeNode) -> int:
+        # DFS? need to check each route
+        # output: num of good nodes
+        # starting with root
+        # 1 + helper()
+        # helper return 1/0
+        # helper(node, curMax, )
+        
+        def helper(node, curMax):
+            if not node:
+                return 0
+            # compare the node with curMax
+            # curMax = max(node, curMax)
+            curMax = max(node.val, curMax)
+            left = helper(node.left, curMax)
+        # left = helper
+        # right = helper
+            right = helper(node.right, curMax)
+            if curMax <= node.val:
+                return 1+left+right
+            else:
+                return 0+left+right
+        return helper(root, root.val)
 
 
 
