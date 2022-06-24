@@ -56,4 +56,20 @@ def reorderList(self, head: Optional[ListNode]) -> None:
         cur = temp1
         
     
-    
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]: 
+        dummy = ListNode()
+        dummy.next = head
+        # first pass to find the total length
+        curLen = 0
+        pointer = dummy
+        while pointer.next:
+            pointer = pointer.next
+            curLen += 1
+        # find target node counting from front
+        remove_node = curLen - n
+        cur = dummy
+        # move cur to the node before remove_node
+        for i in range(remove_node):
+            cur = cur.next
+        cur.next = cur.next.next
+        return dummy.next
