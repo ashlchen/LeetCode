@@ -130,3 +130,23 @@ def rotateList(head, k):
         cur = cur.next
     
 
+def reversePair(head):
+    if not head:
+        return None
+    dummy = Node()
+    dummy.next = head.next
+    if not head.next:
+        return head
+    cur = head
+    while cur and cur.next:
+        temp = cur.next
+        new_section = temp.next
+        if temp.next:
+            connection = temp.next.next
+        else:
+            connection = new_section
+        temp.next = cur
+        cur.next = connection
+        cur = new_section
+    return head
+
