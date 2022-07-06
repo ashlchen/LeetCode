@@ -55,3 +55,32 @@ class Solution:
                     visited.add((newX, newY))
                     queue.append([newX, newY])
         return
+
+    def cloneGraph(self, node: 'Node') -> 'Node':
+        if not node:
+            return node
+        nodes = self.getNodes(node)
+        
+        mapping = {}
+        for n in nodes:
+            mapping[n] = Node(n.val)
+            
+        for n in nodes:
+            newNode = mapping[n]
+            for neighbor in n.neighbors:
+                newNeighbor = mapping[neighbor]
+                newNode.neighbors.append(newNeighbor)
+                
+        return mapping[node]
+    
+    # bfs - find all nodes   
+    def getNodes(self, node):
+        queue = deque([node])
+        visited = set([node])
+        while queue:
+            head = queue.popleft()
+            for neighbor in head.neighbors:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+        return visited
