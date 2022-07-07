@@ -1,5 +1,3 @@
-from cgitb import reset
-from re import X
 
 
 def isIsomorphic(s,t):
@@ -68,6 +66,44 @@ def RomanToInteger(s):
         cur += 1
     return res
 
+
+def postFix(data):
+    post_fix_data = data.split(" ")
+    stack = []
+    
+    if not post_fix_data:
+        return None
+    
+    for i in post_fix_data:
+        if i.isdigit():
+            stack.append(i)
+        else:
+            first = stack.pop()
+            second = stack.pop()
+            stack.append(eval(str(second)+i+str(first)))
+
+    return stack[0]
+        
+def sortStack(self, input):
+    # 1. Create an additional temporary Stack.
+    tempStack = []
+
+    # 2. While input stack is NOT empty do:
+    while len(input) != 0:
+        # 3. Pop an element from input stack called temp.
+        temp = input.pop()
+
+        # 4. While temporary stack is NOT empty and top of temporary stack is greater than temp:
+        while len(tempStack) != 0 and tempStack[len(tempStack)-1] > temp:
+            # 5. Pop from temporary stack and push it to the input stack.
+            input.append(tempStack[len(tempStack)-1])
+            tempStack.pop()
+
+        # 6. Push temp in temporary stack.
+        tempStack.append(temp)
+
+    # 7. In the end, the sorted numbers are in the temporary Stack.
+    return tempStack       
         
 
 def main():
@@ -77,11 +113,12 @@ def main():
     # print(majority([3,2,3]))
     # print(majority([2,2,1,1,1,2,2]))
     # print(majority([1]))
-    print(RomanToInteger("MCMXCIV")) #1994
-    print(RomanToInteger("III"))
-    print(RomanToInteger("LVIII"))
-    print(RomanToInteger("AIII"))
-    print(RomanToInteger(""))
-    print(RomanToInteger("IA"))
+    # print(RomanToInteger("MCMXCIV")) #1994
+    # print(RomanToInteger("III"))
+    # print(RomanToInteger("LVIII"))
+    # print(RomanToInteger("AIII"))
+    # print(RomanToInteger(""))
+    # print(RomanToInteger("IA"))
     # print(RomanToInteger("MCMLXXXIV"))
+    print(postFix("5 1 + 4 * 3 -"))
 main()

@@ -59,9 +59,9 @@ class Solution:
     def cloneGraph(self, node: 'Node') -> 'Node':
         if not node:
             return node
-        nodes = self.getNodes(node)
+        nodes = self.getNodes(node)              # ----- get all nodes in a set
         
-        mapping = {}
+        mapping = {}                             # ----- use hash map to store old:new value pair
         for n in nodes:
             mapping[n] = Node(n.val)
             
@@ -84,3 +84,55 @@ class Solution:
                     visited.add(neighbor)
                     queue.append(neighbor)
         return visited
+
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+        location_to_oceans = []
+        
+        for i in range(len(heights)):
+            for j in range(len(heights[0])):
+                if i == 0 and j == len(heights[0])-1 :
+                    location_to_oceans.append([i,j])
+                    continue
+                if i == len(heights)-1 and j == 0:
+                    location_to_oceans.append([i,j])
+                    continue
+                if not self.bfs(heights, i, j):
+                    continue
+                location_to_oceans.append([i,j])
+        return location_to_oceans
+                
+    def bfs(self, heights, x, y):  
+        queue = deque([(x,y)])
+        status = {"Pacific": False, "Atlantic": False}
+        while queue:
+            cellX, cellY = queue.popleft()
+            for deltaX, deltaY in [(1,0), (0,1), (-1,0), (0,-1)]:
+                newX = cellX + deltaX
+                newY = cellY + deltaY
+                if self.is_valid(heights, cellX, cellY, newX, newY):
+                    queue.append([newX, newY])
+                else:
+                    if self.to_Pacific(heights, cellX, cellY):
+                        status["Pacific"] = True
+                    if self.to_Atlantic(heights, cellX, cellY):
+                        status["Atlantic"] = True
+        if status["Pacific"] == True and status["Atlantic"] == True:
+            return True
+        return False
+                   
+    def is_valid(self, heights, prevX, prevY, newX, newY):    
+        if not 0<=newX<len(heights) or 0<=newY<len(heights[0]):
+            return False
+        if heights[newX][newY] <= heights[prevX][prevY]:
+            return True
+        return False
+        
+    def to_Pacific(self, heights, x, y):
+        if not 0<=(x-1)<len(heights) or not 0<=(y-1)<len(heights[0]):
+            return True
+        return False
+                            
+    def to_Atlantic(self, heights, x, y):
+        if not 0<=(x+1)<len(heights) or 0<=(y+1)<len(heights[0]):
+            return True
+        return False
