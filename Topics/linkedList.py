@@ -148,4 +148,3 @@ def reversePair(head):
 
 def reverseDoublyList(head):
     
-def testCase():
