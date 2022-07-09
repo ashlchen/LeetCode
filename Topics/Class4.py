@@ -1,5 +1,8 @@
 
 
+from ctypes import sizeof
+
+
 def isIsomorphic(s,t):
     _dict= {}
     if len(s) != len(t):
@@ -104,7 +107,41 @@ def sortStack(self, input):
 
     # 7. In the end, the sorted numbers are in the temporary Stack.
     return tempStack       
+
+class Queue:
+    def __init__(self):
+        self.queue = []
+    
+    def push(self, x):
+        self.queue.append(x)
+
+    def pop(self):
+        temp = self.queue[0]
+        self.queue = self.queue[1:]
+        return temp
+
+    def peak(self):
+        return self.queue[0]
+
+    def isEmpty(self): #True/False
+        return self.queue == 0
+
+
+class MovingAverage:
+    def __init__(self, window_size):
+        self.queue = []
+        self.sum = 0
+        self.size = window_size
+     
         
+
+    def next(self, val):
+        self.queue.append(val)
+        self.sum += val
+
+        return self.sum / len(self.queue)
+
+
 
 def main():
     # print(isIsomorphic("abb","cdd"))
@@ -120,5 +157,13 @@ def main():
     # print(RomanToInteger(""))
     # print(RomanToInteger("IA"))
     # print(RomanToInteger("MCMLXXXIV"))
-    print(postFix("5 1 + 4 * 3 -"))
+    # print(postFix("5 1 + 4 * 3 -"))
+    # test = MovingAverage(2)
+    # print(test.next(2))
+    q= Queue()
+    q.push(1)
+    q.push(2)
+    print(q.pop())
+    print(q.peak())
+    print(q.isEmpty())
 main()

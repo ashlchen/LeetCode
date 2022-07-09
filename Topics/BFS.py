@@ -136,3 +136,20 @@ class Solution:
         if not 0<=(x+1)<len(heights) or 0<=(y+1)<len(heights[0]):
             return True
         return False
+
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        edges = [[] for i in range(numCourses)] # index = course, value in the list = next course
+        degrees = [0] * numCourses # store the number of in degree
+        for course, pre_course in prerequisites:
+            edges[pre_course].append(course) # add next course 
+            degrees[course] += 1# add in degree
+
+        queue = collections.deque(course for course, degree in enumerate(degrees) if not degree) # add course which in degree == 0
+        while queue:
+            course = queue.popleft()
+            for next_course in edges[course]: #loop through all next courses
+                degrees[next_course] -= 1 # decrease in degree
+                if not degrees[next_course]: # if next course's in degree == 0
+                    queue.append(next_course) # add to the queue
+
+        return not sum(degrees)
