@@ -138,18 +138,48 @@ class Solution:
         return False
 
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+
+
+        # Create graph [1,0], [2,1]
+        # edges: [1] > [2] > []
+        # in degree: [0, 1, 1] 
         edges = [[] for i in range(numCourses)] # index = course, value in the list = next course
         degrees = [0] * numCourses # store the number of in degree
         for course, pre_course in prerequisites:
             edges[pre_course].append(course) # add next course 
             degrees[course] += 1# add in degree
 
+        # BFS
+        # 1,0 | 2,1 | 3,1
+        # queue(1)
         queue = collections.deque(course for course, degree in enumerate(degrees) if not degree) # add course which in degree == 0
         while queue:
-            course = queue.popleft()
+            course = queue.popleft() # course = 1
             for next_course in edges[course]: #loop through all next courses
                 degrees[next_course] -= 1 # decrease in degree
                 if not degrees[next_course]: # if next course's in degree == 0
                     queue.append(next_course) # add to the queue
 
         return not sum(degrees)
+
+    def valid_tree(self, n: int, edges: List[List[int]]) -> bool:
+        if n == 0:        # no integer
+            return False
+        if len(edges) != n-1: # if number of edges doesn't equal to number of nodes - 1
+            return False
+        g = {}
+        for e in edges:
+            g[e[0]] = g.get(e[0], []) + [e[1]]    # add all neighbors
+            g[e[1]] = g.get(e[1], []) + [e[0]]
+        q = [0]        # always start with 0
+        visited = set([0])
+
+        # make sure all nodes in edges got visited
+        while q:
+            node = q.pop(0)
+            for i in g.get(node, []):
+                if i in visited:
+                    continue
+                q.append(i)
+                visited.add(i)
+        return len(visited) == n
