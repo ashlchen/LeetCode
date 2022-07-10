@@ -85,58 +85,6 @@ class Solution:
                     queue.append(neighbor)
         return visited
 
-    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
-        location_to_oceans = []
-        
-        for i in range(len(heights)):
-            for j in range(len(heights[0])):
-                if i == 0 and j == len(heights[0])-1 :
-                    location_to_oceans.append([i,j])
-                    continue
-                if i == len(heights)-1 and j == 0:
-                    location_to_oceans.append([i,j])
-                    continue
-                if not self.bfs(heights, i, j):
-                    continue
-                location_to_oceans.append([i,j])
-        return location_to_oceans
-                
-    def bfs(self, heights, x, y):  
-        queue = deque([(x,y)])
-        status = {"Pacific": False, "Atlantic": False}
-        while queue:
-            cellX, cellY = queue.popleft()
-            for deltaX, deltaY in [(1,0), (0,1), (-1,0), (0,-1)]:
-                newX = cellX + deltaX
-                newY = cellY + deltaY
-                if self.is_valid(heights, cellX, cellY, newX, newY):
-                    queue.append([newX, newY])
-                else:
-                    if self.to_Pacific(heights, cellX, cellY):
-                        status["Pacific"] = True
-                    if self.to_Atlantic(heights, cellX, cellY):
-                        status["Atlantic"] = True
-        if status["Pacific"] == True and status["Atlantic"] == True:
-            return True
-        return False
-                   
-    def is_valid(self, heights, prevX, prevY, newX, newY):    
-        if not 0<=newX<len(heights) or 0<=newY<len(heights[0]):
-            return False
-        if heights[newX][newY] <= heights[prevX][prevY]:
-            return True
-        return False
-        
-    def to_Pacific(self, heights, x, y):
-        if not 0<=(x-1)<len(heights) or not 0<=(y-1)<len(heights[0]):
-            return True
-        return False
-                            
-    def to_Atlantic(self, heights, x, y):
-        if not 0<=(x+1)<len(heights) or 0<=(y+1)<len(heights[0]):
-            return True
-        return False
-
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
 
 
@@ -167,6 +115,7 @@ class Solution:
             return False
         if len(edges) != n-1: # if number of edges doesn't equal to number of nodes - 1
             return False
+
         g = {}
         for e in edges:
             g[e[0]] = g.get(e[0], []) + [e[1]]    # add all neighbors
@@ -183,3 +132,53 @@ class Solution:
                 q.append(i)
                 visited.add(i)
         return len(visited) == n
+
+    def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
+            # corner case
+            if not heights:
+                return []
+            
+            directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+            nodes_visited_times = {}
+            res = []
+            paci_position, alta_position = self.get_start_position(heights)
+            
+            self.bfs(heights, directions, nodes_visited_times, paci_position)
+            self.bfs(heights, directions, nodes_visited_times, alta_position)
+            
+            for key, val in nodes_visited_times.items():
+                if val == 2:
+                    res.append(list(key))
+            return res
+        
+    def get_start_position(self, heights):
+        m, n = len(heights), len(heights[0])
+        paci_position = []
+        alta_position = []
+        for i in range(m):
+            for j in range(n):
+                if j == 0 or i == 0:
+                    paci_position.append((i,j))
+                if i == m-1 or j == n-1:
+                    alta_position.append((i,j))
+        return paci_position, alta_position    
+            
+    def bfs(self, heights, directions, nodes_visited_times, start_position):  
+        queue = deque(start_position)
+        visited = set(start_position)
+        
+        while queue:
+            cur_posi = queue.popleft()
+            nodes_visited_times[cur_posi] = nodes_visited_times.get(cur_posi, 0) + 1
+            for deltaX, deltaY in directions:
+                newX = cur_posi[0] + deltaX
+                newY = cur_posi[1] + deltaY
+                if not self.is_valid(heights, visited, cur_posi[0], cur_posi[1], newX, newY):
+                    continue
+                visited.add((newX, newY))
+                queue.append((newX, newY))
+                
+                   
+    def is_valid(self, heights, visited, i, j, newX, newY):    
+        return 0 <= newX < len(heights) and 0<= newY < len(heights[0]) and (newX, newY) not in visited and heights[newX][newY] >= heights[i][j]
+        # valid means 1. new cell within the bound 2. I haven't visited the new cell 3. the new cell value is greater or equal to current cell
