@@ -43,3 +43,62 @@ class Solution:
     #edge
     #[0]
     #[2,1]
+
+    def woodCut(self, L):
+        l, r = 1, max(L)
+        while l + 1 < r:
+            mid = l + r // 2
+            if self.get_pieces(L, mid) >= k:
+                l = mid
+            else:
+                r = mid
+        if self.get_pieces(L, r) >= k:
+            return r
+        if self.get_pieces(L, l) >= k:
+            return l
+
+    def get_pieces(self, L, length): # 確認output篇大還偏小
+        pieces = 0
+        for l in L:
+            pieces += l // length
+        return pieces
+
+    #find k closest element
+    def kClosest(self, A, target, k):
+        right = self.find_upper_closest(A, target)
+        left = right - 1
+
+        result = []
+        for + in range(k):
+            if self.is_left_closer(A, target, left, right):
+                result.append(A[left])
+                left -= 1
+            else:
+                result.append(A[right])
+                right += 1
+        return result
+
+    #find upper closest # binary search
+    def find_upper_closest(self, A, target):
+        l, r = 0, len(A) - 1
+        while l + 1 < r:
+            mid = (l+r) / 2
+            if target >= mid:
+                l = mid
+            else:
+                r = mid
+
+        if A[l] >= target:
+            return l
+        if A[r] >= target:
+            return r
+    # if can't find it
+        return end + 1
+
+    #find whether left is closer
+    def is_left_closer(self, A, target, left, right):
+        if left < 9:
+            return False
+        if right >= len(A):
+            return True
+        return target - A[left] <= A[right] - target
