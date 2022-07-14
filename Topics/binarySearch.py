@@ -64,41 +64,41 @@ class Solution:
         return pieces
 
     #find k closest element
-    def kClosest(self, A, target, k):
-        right = self.find_upper_closest(A, target)
-        left = right - 1
+    def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
 
+        right = self.findElement(arr, k, x)
+        left = right - 1
         result = []
-        for + in range(k):
-            if self.is_left_closer(A, target, left, right):
-                result.append(A[left])
+        
+        for _ in range(k):
+            if self.is_left(arr, x, left, right):
+                result.append(arr[left])
                 left -= 1
             else:
-                result.append(A[right])
+                result.append(arr[right])
                 right += 1
-        return result
-
-    #find upper closest # binary search
-    def find_upper_closest(self, A, target):
-        l, r = 0, len(A) - 1
-        while l + 1 < r:
-            mid = (l+r) / 2
-            if target >= mid:
-                l = mid
+        return sorted(result)
+        
+    def findElement(self, arr, k, x):
+        # find the element >= x
+        start, end = 0, len(arr) - 1
+        while start + 1 < end:
+            mid = (start + end) // 2
+            if x >= arr[mid]:
+                start = mid
             else:
-                r = mid
-
-        if A[l] >= target:
-            return l
-        if A[r] >= target:
-            return r
-    # if can't find it
+                end = mid
+        if arr[start] >= x :
+            return start
+        if arr[end] >= x:
+            return end
         return end + 1
-
-    #find whether left is closer
-    def is_left_closer(self, A, target, left, right):
-        if left < 9:
+        # from that element, expand both left and right until result array size == k
+        
+    def is_left(self, arr, x, l, r):
+        if l < 0:
             return False
-        if right >= len(A):
+        if r >= len(arr):
             return True
-        return target - A[left] <= A[right] - target
+        return abs(arr[l] - x) <= abs(arr[r] - x)
+                             
