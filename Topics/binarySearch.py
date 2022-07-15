@@ -69,7 +69,7 @@ class Solution:
         right = self.findElement(arr, k, x)
         left = right - 1
         result = []
-        
+        # expand from left and right
         for _ in range(k):
             if self.is_left(arr, x, left, right):
                 result.append(arr[left])
@@ -78,8 +78,8 @@ class Solution:
                 result.append(arr[right])
                 right += 1
         return sorted(result)
-        
-    def findElement(self, arr, k, x):
+    
+    def findElement(self, arr, k, x): # find right starting point
         # find the element >= x
         start, end = 0, len(arr) - 1
         while start + 1 < end:
@@ -95,10 +95,35 @@ class Solution:
         return end + 1
         # from that element, expand both left and right until result array size == k
         
-    def is_left(self, arr, x, l, r):
+    def is_left(self, arr, x, l, r): # determine if left element is closer to x
         if l < 0:
             return False
         if r >= len(arr):
             return True
         return abs(arr[l] - x) <= abs(arr[r] - x)
                              
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        l, r = 1, max(piles)
+        while l + 1 < r:
+            mid = (l+r) // 2
+            if self.finish_hour(piles, mid) > h:
+                l = mid
+            else:
+                r = mid
+        if self.finish_hour(piles, l) <= h:
+            return l
+        return r
+
+        
+        
+    def finish_hour(self, piles, banana_per_hour):
+        result = 0
+        for pile in piles:
+            if pile > banana_per_hour and pile % banana_per_hour != 0:
+                result += pile // banana_per_hour
+                result += 1
+            elif pile >= banana_per_hour:
+                result += pile // banana_per_hour
+            else:
+                result += 1
+        return result
