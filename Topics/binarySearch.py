@@ -21,6 +21,7 @@ class Solution:
         return -1
 
     def findMin(self, nums: List[int]) -> int:
+
     # two pointer
     l, r = 0, len(nums) - 1
     if len(nums)==1:
@@ -127,3 +128,29 @@ class Solution:
             else:
                 result += 1
         return result
+
+
+class TimeMap:
+
+    def __init__(self):
+        self.map = collections.defaultdict(list)
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.map[key].append([timestamp, value])
+
+    def get(self, key: str, timestamp: int) -> str:
+        if key not in self.map:
+            return ""
+        arr = self.map[key]
+        start, end = 0, len(arr) - 1
+        while start + 1 < end:
+            mid = (start+end) // 2
+            if timestamp >= arr[mid][0]:
+                start = mid
+            else:
+                end = mid
+        if arr[end][0] <= timestamp:
+            return arr[end][1]
+        if arr[start][0] <= timestamp:
+            return arr[start][1]
+        return ""
