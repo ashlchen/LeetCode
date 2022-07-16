@@ -141,7 +141,66 @@ class MovingAverage:
 
         return self.sum / len(self.queue)
 
+def first_subarray_with_sum(nums, target):
+  l = len(nums)
 
+  window_sum, low, high = 0, 0, 0
+
+  while low < l: # O(n)
+    if window_sum < target:
+        high += 1
+        if high >= l:
+            return []
+        window_sum += nums[high]
+    elif window_sum == target:
+        return nums[low:high+1]
+    else:
+        low += 1
+        window_sum -= nums[low]
+
+  return []
+
+def myAtoi(self, s: str) -> int:
+    cleaned_s = s.strip()
+    result = ""
+    negative = False
+    if not cleaned_s:
+        return 0
+    if cleaned_s[0] == "-":
+        negative = True
+        cleaned_s = cleaned_s[1:]
+    elif cleaned_s[0] == "+":
+        cleaned_s = cleaned_s[1:]
+    for char in range(len(cleaned_s)):
+        if not result and cleaned_s[char] == "0":
+            continue
+        if cleaned_s[char] == "-" or cleaned_s[char] == "+":
+            break
+        elif cleaned_s[char].isdigit():
+            result += cleaned_s[char]
+        else:
+            break
+    if not result:
+        return 0
+    if negative == True:
+        result = int(result) * -1
+    if int(result) > 2**31 - 1:
+        return 2**31 - 1
+    if int(result) < -2**31:
+        return -2**31
+    return int(result)
+
+def reverseString(string):
+    l, r = len(string) - 1, len(string) - 1
+    result = ""
+    while l >= 0:
+        if string[l] == " ":
+            result += string[l+1:r+1] + " "
+            l, r = l-1, l-1
+        else:
+            l -= 1
+    result += string[l+1:r+1]
+    return result
 
 def main():
     # print(isIsomorphic("abb","cdd"))
@@ -160,10 +219,25 @@ def main():
     # print(postFix("5 1 + 4 * 3 -"))
     # test = MovingAverage(2)
     # print(test.next(2))
-    q= Queue()
-    q.push(1)
-    q.push(2)
-    print(q.pop())
-    print(q.peak())
-    print(q.isEmpty())
+    # q= Queue()
+    # q.push(1)
+    # q.push(2)
+    # print(q.pop())
+    # print(q.peak())
+    # print(q.isEmpty())
+#     tests = [
+#     { 'input': { 'nums': [1,2,3], 'target': 3 }, 'output': [1,2] },
+#     { 'input': { 'nums': [1,2,3], 'target': 5 }, 'output': [2,3] },
+#     { 'input': { 'nums': [1], 'target': 1 }, 'output': [1] },
+#     { 'input': { 'nums': [], 'target': 0 }, 'output': [] },
+#     { 'input': { 'nums': [1,2,3], 'target': 7 }, 'output': [] },
+#     { 'input': { 'nums': [2,6,0,9,7,3,1,4,1,10], 'target': 15 }, 'output': [6,0,9] },
+#     { 'input': { 'nums': [0,5,7,1,4,7,6,1,4,1,10], 'target': 15 }, 'output': [4,1,10] },
+#     { 'input': { 'nums': [0,5,7,1,4,7,6,1,4,1,10], 'target': 8 },  'output': [7,1] },
+#   ]
+  
+#     for i in range(len(tests)):
+#         print(f'Test {i+1}:', first_subarray_with_sum(tests[i]['input']['nums'], tests[i]['input']['target']) == tests[i]['output'])
+    string = "Today is Saturday!"
+    print(reverseString(string))
 main()
