@@ -127,6 +127,18 @@ class Solution:
                 return 0+left+right
         return helper(root, root.val)
 
+class Solution:
+	lastNode = None
+	
+	def flatten(self, root):
+		if not root:
+			return
+		if self.lastNode:
+			self.lastNode.left = None
+			self.lastNode.right = root
 
+		self.lastNode = root    # update the last node to the current node
+		self.flatten(root.left)
+		self.flatten(root.right)
 
 
