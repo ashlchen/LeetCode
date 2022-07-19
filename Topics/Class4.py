@@ -1,8 +1,5 @@
 
 
-from ctypes import sizeof
-
-
 def isIsomorphic(s,t):
     _dict= {}
     if len(s) != len(t):
