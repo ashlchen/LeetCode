@@ -1,4 +1,4 @@
-
+from collections import deque
 
 def isIsomorphic(s,t):
     _dict= {}
@@ -198,6 +198,28 @@ def reverseString(string):
             l -= 1
     result += string[l+1:r+1]
     return result
+
+def floodFill(image, r, c, color):
+    #edge 
+    if image[node[0]][node[1]] == color:
+        return image
+
+    q = collections.deque([r,c])
+    visited = set()
+    #bfs
+    while q:
+        node = q.popleft()
+        if node not in visited and image[node[0]][node[1]] != color:
+            for newX, newY in ((1,0), (0,1), (-1,0), (0,-1)):
+                if is_valid(node, newX, newY, image, visited):
+                    q.append([node[0]+newX], [node[1]+newY])
+        image[node[0]][node[1]] = color
+    return image
+
+def is_valid(node, newX, newY, image, visited):
+    # within range
+
+    # is not 0 or new color
 
 def main():
     # print(isIsomorphic("abb","cdd"))
