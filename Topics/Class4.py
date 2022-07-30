@@ -1,4 +1,5 @@
 from collections import deque
+from heapq import merge
 
 def isIsomorphic(s,t):
     _dict= {}
@@ -216,12 +217,41 @@ def floodFill(image, r, c, color):
         image[node[0]][node[1]] = color
     return image
 
-def is_valid(node, newX, newY, image, visited):
-    # within range
+# def is_valid(node, newX, newY, image, visited):
+#     # within range
 
-    # is not 0 or new color
+#     # is not 0 or new color
+
+def kSmallest(array, k):
+    array.sort()
+    return array[k-1]
+
+def mergeIntervals(intervals):
+    intervals.sort()
+
+    if len(intervals) <= 1:
+        return intervals
+    result = [intervals[0]]
+   
+    for i in range(1, len(intervals)):
+        if intervals[i][0] > result[-1][1]:
+            result.append(intervals[i])
+        else:
+            result[-1][1] = max(result[-1][1], intervals[i][1])
+    
+    return result
+
+
+
 
 def main():
+    print(kSmallest([7, 10, 4, 3, 20, 15],3))
+    print(mergeIntervals([[6,7], [2,4], [5,9]]))
+    print(mergeIntervals([[1,4], [2,6], [3,5]]))
+    print(mergeIntervals([[1,4]]))
+    print(mergeIntervals([[6,7], [5,9],[2,4]]))
+    print(mergeIntervals([[0,9], [2,4],[5,8]]))
+    print(mergeIntervals([[1,4], [0,4]]))
     # print(isIsomorphic("abb","cdd"))
     # print(isIsomorphic("",""))
     # print(isIsomorphic("","a"))
@@ -257,6 +287,6 @@ def main():
   
 #     for i in range(len(tests)):
 #         print(f'Test {i+1}:', first_subarray_with_sum(tests[i]['input']['nums'], tests[i]['input']['target']) == tests[i]['output'])
-    string = "Today is Saturday!"
-    print(reverseString(string))
+    # string = "Today is Saturday!"
+    # print(reverseString(string))
 main()
