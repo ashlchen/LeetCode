@@ -241,6 +241,27 @@ def mergeIntervals(intervals):
     
     return result
 
+# closure
+# functional programming
+def binaryTreePath(t):
+    all_paths = []
+    current_path = []
+
+    def explore(t):
+        if not t: return
+
+        current_path.append(str(t.val))
+        explore(t.left)
+        explore(t.right)
+
+        if not t.left and not t.right:
+            current_path_as_string = '->'.join(current_path)
+            all_paths.append(current_path_as_string)
+
+        current_path.pop()
+
+        explore(t)
+        return all_paths
 
 
 
