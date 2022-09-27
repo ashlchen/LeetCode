@@ -75,3 +75,42 @@ from Colleges c1
 group by c1.contest_id, c3.hacker_id, c3.name
 having (sum(total_views) + sum(total_unique_views) + sum(total_sub) + sum(total_accepted_sub) != 0)
 order by c1.contest_id
+
+
+-- row number
+set @row_number := 0;
+
+SELECT 
+    @row_number:=CASE
+        WHEN @customer_no = customerNumber 
+			THEN @row_number + 1
+        ELSE 1
+    END AS num,
+    @customer_no:=customerNumber customerNumber,
+    paymentDate,
+    amount
+FROM
+    payments
+ORDER BY customerNumber;
+
+
+-- rank
+WITH order_values AS(
+    SELECT 
+        orderNumber, 
+        YEAR(orderDate) order_year,
+        quantityOrdered*priceEach AS order_value,
+        RANK() OVER (
+            PARTITION BY YEAR(orderDate)
+            ORDER BY quantityOrdered*priceEach DESC
+        ) order_value_rank
+    FROM
+        orders
+    INNER JOIN orderDetails USING (orderNumber)
+)
+SELECT 
+    * 
+FROM 
+    order_values
+WHERE 
+    order_value_rank <=3;
