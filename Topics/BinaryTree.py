@@ -159,3 +159,23 @@ def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -
         return right
     
     return None
+
+
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        def isMatch(root, subRoot):
+            if not root and not subRoot:
+                return True
+            if not root or not subRoot:
+                return False
+            if root.val == subRoot.val:
+                if isMatch(root.left, subRoot.left) and isMatch(root.right, subRoot.right):
+                    return True
+                else:
+                    return False
+            
+        if isMatch(root, subRoot):
+            return True
+        if not root:
+            return False
+        return self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)
+            
